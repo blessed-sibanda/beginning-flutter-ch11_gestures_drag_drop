@@ -85,11 +85,37 @@ class _HomeState extends State<Home> {
     );
   }
 
-  Widget _buildDraggable() {
-    return Container();
+  Draggable<int> _buildDraggable() {
+    return Draggable(
+      child: Column(
+        children: const [
+          Icon(Icons.palette, color: Colors.deepOrange, size: 48.0),
+          Text('Drag Me below to change color'),
+        ],
+      ),
+      feedback: const Icon(Icons.brush, color: Colors.deepOrange, size: 80.0),
+      data: Colors.deepOrange.value,
+    );
   }
 
-  Widget _buildDragTarget() {
-    return Container();
+  DragTarget<int> _buildDragTarget() {
+    Color _paintedColor = Colors.grey;
+    return DragTarget(
+      builder: (BuildContext context, List<dynamic> acceptedData,
+              List<dynamic> rejectedData) =>
+          acceptedData.isEmpty
+              ? Text(
+                  'Drag To and see color change',
+                  style: TextStyle(color: _paintedColor),
+                )
+              : Text(
+                  'Painting Color: $acceptedData',
+                  style: TextStyle(
+                    color: Color(acceptedData[0]),
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+      onAccept: (colorValue) => _paintedColor = Color(colorValue),
+    );
   }
 }
