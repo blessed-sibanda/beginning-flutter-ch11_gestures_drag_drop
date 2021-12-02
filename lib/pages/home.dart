@@ -8,7 +8,7 @@ class Home extends StatefulWidget {
 }
 
 class _HomeState extends State<Home> {
-  late String _gestureDetected;
+  String _gestureDetected = '';
 
   @override
   Widget build(BuildContext context) {
@@ -43,6 +43,45 @@ class _HomeState extends State<Home> {
         print('onTap');
         _displayGestureDetected('onTap');
       },
+      onDoubleTap: () {
+        print('onDoubleTap');
+        _displayGestureDetected('onDoubleTap');
+      },
+      onLongPress: () {
+        print('onLongPress');
+        _displayGestureDetected('onLongPress');
+      },
+      onPanUpdate: (DragUpdateDetails details) {
+        print('onPanUpdate: $details');
+        _displayGestureDetected('onPanUpdate:\n$details');
+      },
+      // onVerticalDragUpdate: ((DragUpdateDetails details) {
+      //   print('onVerticalDragUpdate: $details');
+      //   _displayGestureDetected('onVerticalDragUpdate:\n$details');
+      // }),
+      onHorizontalDragUpdate: (DragUpdateDetails details) {
+        print('onHorizontalDragUpdate: $details');
+        _displayGestureDetected('onHorizontalDragUpdate:\n$details');
+      },
+      onHorizontalDragEnd: (DragEndDetails details) {
+        print('onHorizontalDragEnd: $details');
+        if (details.primaryVelocity! < 0) {
+          print('Dragging Right to Left: ${details.velocity}');
+        } else if (details.primaryVelocity! > 0) {
+          print('Dragging Left to Right: ${details.velocity}');
+        }
+      },
+      child: Container(
+        color: Colors.lightGreen.shade100,
+        width: double.infinity,
+        padding: const EdgeInsets.all(24.0),
+        child: Column(
+          children: [
+            const Icon(Icons.access_alarm, size: 98.0),
+            Text(_gestureDetected),
+          ],
+        ),
+      ),
     );
   }
 
